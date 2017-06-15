@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="./vendor/autoload.php"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         verbose="true"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="true">
+    <testsuite name="TicTacToeTestSuite">
+        <directory>./tests/Unit/</directory>
+    </testsuite>
+    <filter>
+      <blacklist>
+        <directory suffix=".php">./vendor</directory>
+      </blacklist>
+      <whitelist processUncoveredFilesFromWhitelist="true">
+        <directory suffix=".php">./src/</directory>
+      </whitelist>
+    </filter>
+</phpunit>

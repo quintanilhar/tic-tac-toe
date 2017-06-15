@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  app:
+    image: tictactoe/php
+    build:
+      context: .
+      dockerfile: Dockerfile.php
+    volumes:
+      - .:/var/www/
+    depends_on:
+      - composer
+    networks:
+      - tictactoeapp
+
+  webserver:
+    image: tictactoe/nginx 
+    build:
+      context: .
+      dockerfile: Dockerfile.webserver
+    ports:
+      - "5010:80"
+    volumes:
+      - .:/var/www/
+    depends_on:
+      - app
+    networks:
+      - tictactoeapp
+
+  composer:
+    image: composer
+    volumes:
+      - .:/app/
+      - ~/.composer:/composer
+    command: composer install --ignore-platform-reqs --no-scripts
+
+networks:
+  tictactoeapp:
