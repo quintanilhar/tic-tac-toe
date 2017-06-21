@@ -1,14 +1,14 @@
-Feature: Bot makes a move
-    As a developer
-    I need an resource to get the next bot move
-    So that I can play with it.
+Feature: Bot moves
+    In order to play Tic Tac Toe
+    As a player
+    I want to play a game with a bot
 
-    Scenario: Bot starts the game
+    Scenario: Start the game
         Given the board state is:
             |   |   |   |
             |   |   |   |
             |   |   |   |
-        When I ask for the next move
+        When I request for the next bot move
         Then The game state should be:
             | X |   |   |
             |   |   |   |
