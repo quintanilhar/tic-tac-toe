@@ -28,3 +28,11 @@ h1 {
     font-weight: bold;
     font-size: 30px;
 }
+
+.message {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px 0;
+    background-color: rgb(242, 235, 211);
+    color: rgb(75, 191, 107);
+}

@@ -61,9 +61,18 @@ Game.prototype = {
             );
 
             game.registerEvents(game);
-        }).fail(function (e) {
+        }).fail(function (response) {
+            if (response.status === 422) {
+                game.writeMessage('Game Over'); 
+                return;
+            }
+
             alert('Something goes wrong, sorry, try again later.');
         });
+    },
+    
+    writeMessage: function (message) {
+        $('.message').html(message);
     }
 };
 
