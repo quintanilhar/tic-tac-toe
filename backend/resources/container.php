@@ -14,3 +14,11 @@ $container['logger'] = function ($c) {
 
     return $logger;
 };
+
+$container['move'] = function() {
+    return new \Quintanilhar\TicTacToe\Domain\BotMove();
+};
+
+$container['moveResource'] = function ($c) {
+    return new \Quintanilhar\TicTacToe\Resource\MoveResource($c['move']);
+};

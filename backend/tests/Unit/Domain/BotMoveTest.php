@@ -60,4 +60,24 @@ class BotMoveTest extends TestCase
 
         $this->move->makeMove($boardState, 'X');
     }
+
+    /**
+     * @test
+     * @dataProvider invalidBoards
+     * @expectedException InvalidArgumentException
+     */
+    public function itShouldThrowInvalidArgumentException($boardState)
+    {
+        $this->move->makeMove($boardState, 'X');
+    }
+
+    public function invalidBoards()
+    {
+        return [
+            [[]],
+            [['', '', '']],
+            [['', '', ''], ['', '', '']],
+            [['', ''], ['', ''], ['', '']],
+        ];
+    }
 }

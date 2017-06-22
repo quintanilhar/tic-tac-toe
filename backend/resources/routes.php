@@ -2,6 +2,9 @@
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use Quintanilhar\TicTacToe\Resource\HomeResource;
+use Quintanilhar\TicTacToe\Resource;
 
-$app->post('/{player}/moves', MoveResource::class);
+$app->group('/v1', function() use ($container) {
+    $this->post('/{team}/moves', $container['moveResource'])
+        ->add(Resource\PostRequestValidationMiddleware::class);
+});

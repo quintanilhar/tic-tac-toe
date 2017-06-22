@@ -10,8 +10,10 @@ class BotMove implements MoveInterface
      *
      * @return array
      */
-    public function makeMove($boardState, $playerUnit = 'X') : array
+    public function makeMove(array $boardState, string $playerUnit = 'X') : array
     {
+        $this->validateBoard($boardState);
+
         foreach ($boardState as $rowNumber => $row) {
             foreach ($row as $columnNumber => $column) {
                 if (!empty($column)) {
@@ -23,5 +25,27 @@ class BotMove implements MoveInterface
         }
 
         throw new GameOverException('The bot can not make a move.');
+    }
+
+    /**
+     * Validate if the board is a matrix of 3x3.
+     * @param array $board
+     * @throws InvalidArgumentException
+     */
+    private function validateBoard(array $board)
+    {
+        $message = 'The field board is invalid, it must be a 3x3 matrix.'; 
+
+        if (count($board) !== 3) {
+            throw new \InvalidArgumentException($message);
+        }
+
+        foreach ($board as $row) {
+            if (count($row) === 3) {
+                continue;
+            }
+
+            throw new \InvalidArgumentException($message);
+        }
     }
 }
