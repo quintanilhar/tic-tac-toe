@@ -35,4 +35,16 @@ h1 {
     padding: 10px 0;
     background-color: rgb(242, 235, 211);
     color: rgb(75, 191, 107);
+    font-size: 18px;
+}
+
+.message a {
+    text-decoration: none;
+    color: rgb(75, 191, 107);
+}
+
+.winner {
+    display: block;
+    font-size: 30px;
+    font-weight: bold;
 }
