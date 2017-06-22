@@ -34,16 +34,17 @@ cd tic-tac-toe
 ```shell
 ./bin/run-app.sh
 ```
-> This command will up the two applications, frontend and backend, and it may delay
-to complete if you are running for the first time because it will download the docker images
-from internet.
+> Note: this command will up two applications, frontend and backend, and it may 
+spend some time to complete if you are running for the first time because it 
+will download the docker images from Docker Hub.
 
 4- Access the bellow address in your browser:
 ```shell
 http://localhost:5020
 ```
 
-> The API (backend) is running on port 5010 and can be requested at http://localhost:5010.
+> Note: the API (backend) is running on port 5010 and can be requested at 
+http://localhost:5010.
 
 ## Running the tests
 
@@ -58,7 +59,7 @@ http://localhost:5020
 
 ```shell
 ./bin/run-integration-tests.sh
-
+```
 
 ## Built With
 
