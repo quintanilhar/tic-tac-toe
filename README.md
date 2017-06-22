@@ -46,6 +46,30 @@ http://localhost:5020
 > Note: the API (backend) is running on port 5010 and can be requested at 
 http://localhost:5010.
 
+5- Make a POST request to the move resource:
+
+Example:
+```shell
+POST http://localhost:5010/v1/X/moves
+
+Content-Type: application/json
+{
+    "board": [ 
+        ["O", "X", "X"],
+        ["", "", ""],
+        ["", "O", ""]
+    ]
+} 
+```
+
+The expected response should be:
+```shell
+200 OK
+
+{"x":1,"y":0}
+
+```
+
 ## Running the tests
 
 * **Unit tests** - run the command:
