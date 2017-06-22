@@ -28,7 +28,8 @@ class BotMove implements MoveInterface
     }
 
     /**
-     * Validate if the board is a matrix of 3x3.
+     * Validate if the given board is a matrix of 3x3.
+     *
      * @param array $board
      * @throws InvalidArgumentException
      */
