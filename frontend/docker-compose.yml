@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  frontend:
+    image: tictactoe/frontend-nginx 
+    build:
+      context: .
+      dockerfile: Dockerfile.webserver
+    ports:
+      - "5020:80"
+    volumes:
+      - .:/var/www/
+    networks:
+      - tictactoeapp
+
+networks:
+  tictactoeapp:
