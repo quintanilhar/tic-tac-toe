@@ -15,6 +15,14 @@ $container['logger'] = function ($c) {
     return $logger;
 };
 
+$container['errorHandler'] = function ($c) {
+    return new \Quintanilhar\TicTacToe\Application\ErrorHandler($c['logger']);
+};
+
+$container['phpErrorHandler'] = function ($c) {
+    return new \Quintanilhar\TicTacToe\Application\PhpErrorHandler($c['logger']);
+};
+
 $container['move'] = function() {
     return new \Quintanilhar\TicTacToe\Domain\BotMove();
 };
