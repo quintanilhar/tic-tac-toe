@@ -30,6 +30,9 @@ Game.prototype = {
                  }
             });
 
+    },
+
+    registerRestartEvent: function (game) {
         $('.restart').on('click', function() {
             var cell = $('.board-cell');
             
@@ -37,6 +40,9 @@ Game.prototype = {
             cell.contents().filter(function(){ return this.nodeType != 1; }).remove();
 
             $('.message p').remove();
+
+            game.removeEvents();
+            game.registerEvents(game);
         });
     },
 
@@ -146,4 +152,5 @@ Game.prototype = {
 $(document).ready(function() {
     var game = new Game();
     game.registerEvents(game);
+    game.registerRestartEvent(game);
 });
