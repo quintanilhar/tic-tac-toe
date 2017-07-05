@@ -5,6 +5,7 @@ Game.prototype = {
     constructor: Game,
     humanTeam: 'X',
     botTeam: 'O',
+    turns: [],
 
     registerEvents: function (game) {
         $('.board-cell')
@@ -56,6 +57,12 @@ Game.prototype = {
             .parent()
             .append(team);
 
+        this.turns.push({
+            'team'   : team,
+            'row'    : xCoordinate,
+            'column' : yCoordinate
+        });
+
         this.validateGameOver();
     },
 
@@ -74,40 +81,18 @@ Game.prototype = {
     },
 
     validateGameOver: function () {
-        
-        var board = this.boardState(); 
-
-        var winnerStates = [
-            // Rows
-            [{x: 0, y: 0}, {x: 0, y: 1}, {x: 0, y: 2}],
-            [{x: 1, y: 0}, {x: 1, y: 1}, {x: 1, y: 2}],
-            [{x: 2, y: 0}, {x: 2, y: 1}, {x: 2, y: 2}],
-
-            //Columns
-            [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}],
-            [{x: 0, y: 1}, {x: 1, y: 1}, {x: 2, y: 1}],
-            [{x: 0, y: 2}, {x: 1, y: 2}, {x: 2, y: 2}],
-
-            // Diagonals
-            [{x: 0, y: 0}, {x: 1, y: 1}, {x: 2, y: 2}],
-            [{x: 0, y: 2}, {x: 1, y: 1}, {x: 2, y: 0}],
-        ];
-
-        var winner = null;
-
-        $.each(winnerStates, function (index, state) {
-            if (board[state[0].x][state[0].y] === board[state[1].x][state[1].y] &&
-                board[state[1].x][state[1].y] === board[state[2].x][state[2].y] &&
-                board[state[2].x][state[2].y] === board[state[0].x][state[0].y]
-            ) {
-                winner = board[state[0].x][state[0].y];
-                return false;
-            } 
+        $.ajax({
+            url: 'http://localhost:5010/v1/games',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({turns: this.turns}),
+        }).done(function (data) {
+            if (data && data.status === 'gameover') {
+                throw {name: 'gameOver', message: '<p><span class="winner">' + data.message + '</span></p>'};
+            }
+        }).fail(function (response) {
+            alert('Something goes wrong, sorry, try again later.');
         });
-
-        if (winner !== null && winner.length) {
-            throw {name: 'gameOver', message: '<p><span class="winner">' + winner + '</span> winner!</p>'};
-        }
     },
 
     requestBotMove: function (game) {
