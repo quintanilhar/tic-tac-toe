@@ -6,6 +6,7 @@ use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use PHPUnit\Framework\Assert;
+use Quintanilhar\TicTacToeTests\Integration\Context\Helper\ApiClient;
 
 /**
  * Defines application features from the specific context.
@@ -14,70 +15,17 @@ class FeatureContext implements Context
 {
     const BOT_TEAM = 'X';
 
-    const API_ENDPOINT = 'http://webserver/v1/';
+    private $client;
 
     private $boardState = [];
 
-    private $httpClient;
+    private $turns = [];
 
     private $response;
 
     public function __construct()
     {
-        $this->httpClient = new Client([
-            'base_uri' => self::API_ENDPOINT,
-            'timeout' => 2.0
-        ]); 
-    }
-
-    /**
-     * @Given the board state is:
-     */
-    public function theBoardStateIs(TableNode $table)
-    {
-        foreach ($table->getTable() as $row) {
-            $this->boardState[] = $row;
-        }
-    }
-
-    /**
-     * @When I request for the next bot move
-     */
-    public function iRequestForTheNextBotMove()
-    {
-        try {
-            $this->response = $this->httpClient->request('POST', self::BOT_TEAM .'/moves', [
-                'json' => [
-                    'board' => $this->boardState
-                ]
-            ]); 
-        } catch (RequestException $e) {
-            if ($e->hasResponse()) {
-                $this->response = $e->getResponse();
-            }
-        }
-    }
-
-    /**
-     * @Then The game state should be:
-     */
-    public function theGameStateShouldBe(TableNode $table)
-    {
-        $move = json_decode((string)$this->response->getBody(), true);
-
-        $this->boardState[$move['x']][$move['y']] = self::BOT_TEAM;
-
-        $expectedBoard = [];
-        foreach ($table->getTable() as $index => $row) {
-            $expectedBoard[] = $row;
-        }
-
-        $output = null;
-        foreach ($this->boardState as $row) {
-            $output .= "| " . implode(' | ', $row) . " |\n";
-        } 
-
-        Assert::assertSame($this->boardState, $expectedBoard, $output);
+        $this->client = new ApiClient();
     }
 
     /**
@@ -97,5 +45,87 @@ class FeatureContext implements Context
             '/' . preg_quote($text) . '/i',
             (string)$this->response->getBody()
         );
+    }
+
+    /**
+     * @Then The game state should be:
+     */
+    public function theGameStateShouldBe(TableNode $table)
+    {
+        $expectedBoard = [];
+        foreach ($table->getTable() as $index => $row) {
+            $expectedBoard[] = $row;
+        }
+
+        $output = null;
+        foreach ($this->boardState as $row) {
+            $output .= "| " . implode(' | ', $row) . " |\n";
+        } 
+
+        Assert::assertSame($expectedBoard, $this->boardState, $output);
+    }
+
+    /**
+     * @Given the board state is:
+     */
+    public function theBoardStateIs(TableNode $table)
+    {
+        foreach ($table->getTable() as $row) {
+            $this->boardState[] = $row;
+        }
+    }
+
+    /**
+     * @When I request for the next bot move
+     */
+    public function iRequestForTheNextBotMove()
+    {
+        $this->response = $this->client->postMove(self::BOT_TEAM, $this->boardState);
+
+        $move = json_decode((string)$this->response->getBody(), true);
+
+        if (isset($move['x']) && isset($move['y'])) {
+            $this->boardState[$move['x']][$move['y']] = self::BOT_TEAM;
+        }
+    }
+
+    /**
+     * @Given the following turns:
+     */
+    public function theFollowingTurns(TableNode $turnsTable)
+    {
+        foreach ($turnsTable->getHash() as $turn) {
+            $this->turns[$turn['turn']] = $turn;
+        }
+    }
+
+    /**
+     * @When request the game status
+     */
+    public function requestTheGameStatus()
+    {
+        $this->response = $this->client->postGame($this->turns);
+
+        $this->boardState = [
+            ['', '', ''],
+            ['', '', ''],
+            ['', '', ''],
+        ];
+
+        $payload = json_decode((string)$this->response->getBody(), true);
+
+        if (isset($payload['board'])) {
+            $this->boardState = $payload['board'];
+        }
+    }
+
+    /**
+     * @Then the status should be :status
+     */
+    public function theStatusShouldBe($status)
+    {
+        $payload = json_decode((string)$this->response->getBody(), true);
+
+        Assert::assertEquals($status, $payload['status']);
     }
 }

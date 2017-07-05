@@ -30,3 +30,11 @@ $container['move'] = function() {
 $container['moveResource'] = function ($c) {
     return new \Quintanilhar\TicTacToe\Resource\MoveResource($c['move']);
 };
+
+$container['game'] = function() {
+    return new \Quintanilhar\TicTacToe\Domain\Game();
+};
+
+$container['gameResource'] = function ($c) {
+    return new \Quintanilhar\TicTacToe\Resource\GameResource($c['game']);
+};

@@ -6,4 +6,3 @@ default:
       paths: [%paths.base%/tests/Integration/Features/ ]
       contexts:
         - FeatureContext
-        - GameContext
