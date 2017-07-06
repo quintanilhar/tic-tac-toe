@@ -1,3 +1,27 @@
+# Tic Tac Toe Game
+
+A PHP implementation of Tic Tac Toe game.
+
+## Getting Started
+
+### Prerequisites
+
+Before start, you must have installed in your machine the following tools:
+
+* [Docker](https://docs.docker.com/engine/installation/) - version >=17.0
+* [Docker Compose](https://docs.docker.com/compose/install/) - version >=13.0
+* [Git](https://git-scm.com/)
+
+
+### Installing
+
+Follow the steps bellow to get the development/testing environment up and running:
+
+
+1- Clone this repository:
+
+```shell
+git clone https://github.com/quintanilhar/tic-tac-toe.git
 
 ```
 
