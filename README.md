@@ -48,12 +48,12 @@ http://localhost:5010.
 
 ## API Resources
 
-### /v1/{team}/moves
+### /v1/bots/{team}/moves
 Resource to take the next bot move based on the given board.
 
 Request:
 ```shell
-POST http://localhost:5010/v1/X/moves
+POST http://localhost:5010/v1/bots/X/moves
 
 Content-Type: application/json
 {

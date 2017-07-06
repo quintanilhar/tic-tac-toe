@@ -98,7 +98,7 @@ Game.prototype = {
         var board = this.boardState();
 
         $.ajax({
-            url: 'http://localhost:5010/v1/' + game.botTeam + '/moves',
+            url: 'http://localhost:5010/v1/bots/' + game.botTeam + '/moves',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({board: board}),

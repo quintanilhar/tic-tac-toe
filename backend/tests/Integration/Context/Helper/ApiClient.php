@@ -39,7 +39,7 @@ class ApiClient
     public function postMove($botTeam, $boardState)
     {
         try {
-            return $this->client->request('POST', $botTeam . '/moves', [
+            return $this->client->request('POST', sprintf('bots/%s/moves', $botTeam), [
                 'json' => [
                     'board' => $boardState
                 ]
