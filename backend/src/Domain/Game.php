@@ -2,6 +2,8 @@
 
 namespace Quintanilhar\TicTacToe\Domain;
 
+use InvalidArgumentException;
+
 class Game
 {
     private $board;
@@ -53,6 +55,19 @@ class Game
                 $this->winner
             );
         }
+
+        $team = $this->board[$position->row()][$position->column()];
+        
+        if (!empty($team)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'The position %d,%d is already filled by %s team',
+                    $position->row(),
+                    $position->column(),
+                    $team
+                )
+            );
+        } 
 
         $this->board[$position->row()][$position->column()] = $player->team();  
         $this->turn++;

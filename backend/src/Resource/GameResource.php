@@ -46,6 +46,13 @@ class GameResource
                     'board'     => $this->game->board()
                 ]
             );
+        } catch (\InvalidArgumentException $e) {
+            return $response->withStatus(422)
+                ->withJson(
+                    [
+                        'error' => $e->getMessage()
+                    ] 
+                );
         }
     }
 }

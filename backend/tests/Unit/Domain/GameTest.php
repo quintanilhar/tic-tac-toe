@@ -103,4 +103,17 @@ class GameTest extends TestCase
             $game->moveOf(Player::playerOfOTeam(), new Position(0, 0));
         }
     }
+
+    /**
+     * @test
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage The position 0,0 is already filled by X team
+     */
+    public function itShouldThrowExceptionWhenMoveOfSomePositionWasGiven()
+    {
+        $game = new Game();
+
+        $game->moveOf(Player::playerOfXTeam(), new Position(0, 0));
+        $game->moveOf(Player::playerOfOTeam(), new Position(0, 0));
+    }
 }
