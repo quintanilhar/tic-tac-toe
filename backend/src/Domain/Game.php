@@ -67,9 +67,9 @@ class Game
                     $team
                 )
             );
-        } 
+        }
 
-        $this->board[$position->row()][$position->column()] = $player->team();  
+        $this->board[$position->row()][$position->column()] = $player->team();
         $this->turn++;
 
         if ($this->hasWinner()) {

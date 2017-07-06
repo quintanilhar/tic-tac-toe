@@ -15,7 +15,7 @@ class ApiClient
             $this->client = new Client([
                 'base_uri' => 'http://webserver/v1/',
                 'timeout' => 2.0
-            ]); 
+            ]);
         }
 
         return $this->client;
@@ -28,7 +28,7 @@ class ApiClient
                 'json' => [
                     'turns' => $turns
                 ]
-            ]); 
+            ]);
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
                 return $e->getResponse();
@@ -43,7 +43,7 @@ class ApiClient
                 'json' => [
                     'board' => $boardState
                 ]
-            ]); 
+            ]);
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
                 return $e->getResponse();

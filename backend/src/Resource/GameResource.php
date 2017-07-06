@@ -37,7 +37,6 @@ class GameResource
             }
 
             return $response->withStatus(204);
-
         } catch (GameOverException $e) {
             return $response->withJson(
                 [
@@ -51,7 +50,7 @@ class GameResource
                 ->withJson(
                     [
                         'error' => $e->getMessage()
-                    ] 
+                    ]
                 );
         }
     }

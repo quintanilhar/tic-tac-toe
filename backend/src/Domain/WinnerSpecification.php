@@ -41,7 +41,7 @@ class WinnerSpecification
                 $thirdPosition == $firstPosition
             ) {
                 return true;
-            } 
+            }
         }
 
         return false;

@@ -17,7 +17,7 @@ class PostRequestValidationMiddleware
             empty($body['board'])
         ) {
             return $this->prepareResponse($response, [
-                'board' => 'The field board is required and can\'t be blank' 
+                'board' => 'The field board is required and can\'t be blank'
             ]);
         }
 

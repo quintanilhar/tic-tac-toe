@@ -35,7 +35,7 @@ class BotMove implements MoveInterface
      */
     private function validateBoard(array $board)
     {
-        $message = 'The field board is invalid, it must be a 3x3 matrix.'; 
+        $message = 'The field board is invalid, it must be a 3x3 matrix.';
 
         if (count($board) !== 3) {
             throw new \InvalidArgumentException($message);

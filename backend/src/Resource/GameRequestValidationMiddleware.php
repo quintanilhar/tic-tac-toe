@@ -17,7 +17,7 @@ class GameRequestValidationMiddleware
             empty($body['turns'])
         ) {
             return $this->prepareResponse($response, [
-                'turns' => 'The field turns is required and can\'t be blank' 
+                'turns' => 'The field turns is required and can\'t be blank'
             ]);
         }
 
@@ -26,10 +26,10 @@ class GameRequestValidationMiddleware
                 array_key_exists('row', $turn) &&
                 array_key_exists('column', $turn)) {
                 continue;
-            } 
+            }
 
             return $this->prepareResponse($response, [
-                'turns' => 'Invalid item(s) in turns field' 
+                'turns' => 'Invalid item(s) in turns field'
             ]);
         }
 

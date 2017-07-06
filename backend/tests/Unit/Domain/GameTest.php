@@ -46,7 +46,7 @@ class GameTest extends TestCase
         );
 
         $this->assertEquals($expectedBoard, $game->board());
-        $this->assertEquals(1, $game->turn()); 
+        $this->assertEquals(1, $game->turn());
     }
 
     /**
@@ -72,7 +72,7 @@ class GameTest extends TestCase
             $this->fail('It expects a GameOverException.');
         } catch (GameOverException $e) {
             $this->assertEquals($expectedBoard, $game->board());
-            $this->assertEquals(5, $game->turn()); 
+            $this->assertEquals(5, $game->turn());
             $this->assertEquals(Player::playerOfXTeam(), $e->winner());
         }
     }
@@ -144,8 +144,8 @@ class GameTest extends TestCase
             $this->fail('It expects a GameOverException.');
         } catch (GameOverException $e) {
             $this->assertEquals($expectedBoard, $game->board());
-            $this->assertEquals(9, $game->turn()); 
-            $this->assertEquals('Draw game', $e->getMessage()); 
+            $this->assertEquals(9, $game->turn());
+            $this->assertEquals('Draw game', $e->getMessage());
             $this->assertNull($e->winner());
         }
     }
