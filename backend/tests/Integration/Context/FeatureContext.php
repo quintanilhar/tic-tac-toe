@@ -100,9 +100,9 @@ class FeatureContext implements Context
     }
 
     /**
-     * @When request the game status
+     * @When I request the game status
      */
-    public function requestTheGameStatus()
+    public function iRequestTheGameStatus()
     {
         $this->response = $this->client->postGame($this->turns);
 

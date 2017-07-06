@@ -5,19 +5,31 @@ namespace Quintanilhar\TicTacToe\Resource;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
-class PostRequestValidationMiddleware
+class GameRequestValidationMiddleware
 {
     public function __invoke(Request $request, Response $response, $next)
     {
         $body = $request->getParsedBody();
 
         if (empty($body) ||
-            !isset($body['board']) ||
-            !is_array($body['board']) ||
-            empty($body['board'])
+            !isset($body['turns']) ||
+            !is_array($body['turns']) ||
+            empty($body['turns'])
         ) {
             return $this->prepareResponse($response, [
-                'board' => 'The field board is required and can\'t be blank' 
+                'turns' => 'The field turns is required and can\'t be blank' 
+            ]);
+        }
+
+        foreach ($body['turns'] as $turn) {
+            if (array_key_exists('team', $turn) &&
+                array_key_exists('row', $turn) &&
+                array_key_exists('column', $turn)) {
+                continue;
+            } 
+
+            return $this->prepareResponse($response, [
+                'turns' => 'Invalid item(s) in turns field' 
             ]);
         }
 

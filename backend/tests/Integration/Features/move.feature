@@ -15,12 +15,12 @@ Feature: Bot moves
             |   |   |   |
             |   |   |   |
 
-    Scenario: Passing a empty board
+    Scenario: Empty payload
         When I request for the next bot move
         Then the response code should be "400"
         And the response should contain "The field board is required"
 
-    Scenario: Passing a invalid board
+    Scenario: Invalid payload schema
         Given the board state is:
             |   |   |   |
         When I request for the next bot move

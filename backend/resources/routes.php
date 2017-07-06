@@ -8,5 +8,6 @@ $app->group('/v1', function() use ($container) {
     $this->post('/{team}/moves', $container['moveResource'])
         ->add(Resource\PostRequestValidationMiddleware::class);
 
-    $this->post('/games', $container['gameResource']);
+    $this->post('/games', $container['gameResource'])
+        ->add(Resource\GameRequestValidationMiddleware::class);
 });

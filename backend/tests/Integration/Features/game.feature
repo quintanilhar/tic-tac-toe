@@ -10,7 +10,7 @@ Feature: Game playing
             | 2    | X    | 0   | 1      |
             | 3    | O    | 2   | 1      |
             | 4    | X    | 0   | 2      |
-        When request the game status
+        When I request the game status
         Then the response code should be "200"
         And the game state should be:
             | X | X | X |
@@ -28,7 +28,7 @@ Feature: Game playing
             | 3    | O    | 2   | 1      |
             | 4    | X    | 0   | 2      |
             | 5    | O    | 2   | 0      |
-        When request the game status
+        When I request the game status
         Then the response code should be "200"
         And the game state should be:
             | X |   | X |
@@ -43,5 +43,18 @@ Feature: Game playing
             | 0    | X    | 0   | 0      |
             | 1    | O    | 2   | 2      |
             | 2    | X    | 1   | 1      |
-        When request the game status
+        When I request the game status
         Then the response code should be "204"
+
+    Scenario: Empty payload
+        When I request the game status
+        Then the response code should be "400"
+        And the response should contain "The field turns is required"
+
+    Scenario: Invalid payload schema
+        Given the following turns:
+            | turn | team | invalid | column | 
+            | 0    | X    | 0       | 0      |
+        When I request the game status
+        Then the response code should be "400"
+        And the response should contain "Invalid item(s) in turns field"
