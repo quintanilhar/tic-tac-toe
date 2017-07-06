@@ -1,27 +1,3 @@
-# Tic Tac Toe Game
-
-A PHP implementation of Tic Tac Toe game.
-
-## Getting Started
-
-### Prerequisites
-
-Before start, you must have installed in your machine the following tools:
-
-* [Docker](https://docs.docker.com/engine/installation/) - version >=17.0
-* [Docker Compose](https://docs.docker.com/compose/install/) - version >=13.0
-* [Git](https://git-scm.com/)
-
-
-### Installing
-
-Follow the steps bellow to get the development/testing environment up and running:
-
-
-1- Clone this repository:
-
-```shell
-git clone https://github.com/quintanilhar/tic-tac-toe.git
 
 ```
 
@@ -46,9 +22,12 @@ http://localhost:5020
 > Note: the API (backend) is running on port 5010 and can be requested at 
 http://localhost:5010.
 
-5- Make a POST request to the move resource:
+## API Resources
 
-Example:
+### /v1/{team}/moves
+Resource to take the next bot move based on the given board.
+
+Request:
 ```shell
 POST http://localhost:5010/v1/X/moves
 
@@ -62,11 +41,73 @@ Content-Type: application/json
 } 
 ```
 
-The expected response should be:
+Response:
 ```shell
 200 OK
 
 {"x":1,"y":0}
+
+```
+
+### /v1/games
+Resource to take the game status.
+
+Request:
+```shell
+POST http://localhost:5010/v1/games
+
+Content-Type: application/json
+{
+    "turns": [
+        {
+            "team": "X",
+            "row": 0,
+            "column": 0
+        },
+        {
+            "team": "O",
+            "row": 1,
+            "column": 1
+        }
+    ]
+}
+```
+
+Response when the game has not ended yet:
+```shell
+204 No Content
+
+```
+
+Response when the game ends with a winner:
+```shell
+200 Ok
+
+{
+    "status": "gameover",
+    "board" : [
+        ["X", "X", "X"],
+        ["", "", ""],
+        ["", "O", "O"]
+    ],
+    "message": "The X team won!"
+}
+
+```
+
+Response when the game ends in a draw:
+```shell
+200 Ok
+
+{
+    "status": "gameover",
+    "board" : [
+        ["X", "O", "X"],
+        ["X", "O", "X"],
+        ["O", "X", "O"]
+    ],
+    "message": "Draw game"
+}
 
 ```
 
