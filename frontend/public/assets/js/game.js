@@ -13,24 +13,22 @@ Game.prototype = {
                 return !$(this).find('input').val();
             })
             .on('click', function(e) {
-                try {
                     game.move(
                         $(this).data('row'),
                         $(this).data('column'),
                         game.humanTeam
-                    );
+                    ).done(function (data) {
+                        if (data && data.status === 'gameover') {
+                            this.writeMessage('<p>' + data.message + '</p>');
+                            this.removeEvents();
+                            return;
+                        }
 
-                    $(this).unbind('click');
+                        this.requestBotMove(this);
+                 });
 
-                    game.requestBotMove(game);
-                 } catch (err) {
-                    if (err.name == 'gameOver') {
-                        game.writeMessage(err.message);
-                        game.removeEvents();
-                    } 
-                 }
+                 $(this).unbind('click');
             });
-
     },
 
     registerRestartEvent: function (game) {
@@ -44,6 +42,8 @@ Game.prototype = {
 
             game.removeEvents();
             game.registerEvents(game);
+
+            game.turns = [];
         });
     },
 
@@ -63,7 +63,7 @@ Game.prototype = {
             'column' : yCoordinate
         });
 
-        this.validateGameOver();
+        return this.validateGameOver();
     },
 
     boardState: function () {
@@ -81,15 +81,12 @@ Game.prototype = {
     },
 
     validateGameOver: function () {
-        $.ajax({
+        return $.ajax({
             url: 'http://localhost:5010/v1/games',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({turns: this.turns}),
-        }).done(function (data) {
-            if (data && data.status === 'gameover') {
-                throw {name: 'gameOver', message: '<p><span class="winner">' + data.message + '</span></p>'};
-            }
+            context: this,
         }).fail(function (response) {
             alert('Something goes wrong, sorry, try again later.');
         });
@@ -106,19 +103,18 @@ Game.prototype = {
             contentType: 'application/json',
             data: JSON.stringify({board: board}),
         }).done(function (data) {
-            try {
-                game.move(
-                    data.x,
-                    data.y,
-                    game.botTeam        
-                );
+            game.move(
+                data.x,
+                data.y,
+                game.botTeam        
+            ).done(function(data) {
+                if (data && data.status === 'gameover') {
+                    this.writeMessage('<p>' + data.message + '</p>');
+                    return;
+                }
 
-                game.registerEvents(game);
-            } catch (err) {
-                if (err.name == 'gameOver') {
-                    game.writeMessage(err.message);
-                } 
-            }
+                this.registerEvents(this);
+            });
         }).fail(function (response) {
             if (response.status === 422) {
                 game.writeMessage('Draw'); 
