@@ -69,7 +69,7 @@ class GameTest extends TestCase
 
         try {
             $game->moveOf(Player::playerOfXTeam(), new Position(0, 0));
-            $this->fail('Expects a GameOverException.');
+            $this->fail('It expects a GameOverException.');
         } catch (GameOverException $e) {
             $this->assertEquals($expectedBoard, $game->board());
             $this->assertEquals(5, $game->turn()); 
@@ -115,5 +115,38 @@ class GameTest extends TestCase
 
         $game->moveOf(Player::playerOfXTeam(), new Position(0, 0));
         $game->moveOf(Player::playerOfOTeam(), new Position(0, 0));
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldBeADrawGame()
+    {
+        $game = new Game();
+
+        $expectedBoard = [
+            ['X', 'O', 'X'],
+            ['X', 'O', 'X'],
+            ['O', 'X', 'O'],
+        ];
+
+        $game->moveOf(Player::playerOfXTeam(), new Position(0, 0));
+        $game->moveOf(Player::playerOfOTeam(), new Position(0, 1));
+        $game->moveOf(Player::playerOfXTeam(), new Position(0, 2));
+        $game->moveOf(Player::playerOfOTeam(), new Position(1, 1));
+        $game->moveOf(Player::playerOfXTeam(), new Position(1, 0));
+        $game->moveOf(Player::playerOfOTeam(), new Position(2, 0));
+        $game->moveOf(Player::playerOfXTeam(), new Position(1, 2));
+        $game->moveOf(Player::playerOfOTeam(), new Position(2, 2));
+
+        try {
+            $game->moveOf(Player::playerOfXTeam(), new Position(2, 1));
+            $this->fail('It expects a GameOverException.');
+        } catch (GameOverException $e) {
+            $this->assertEquals($expectedBoard, $game->board());
+            $this->assertEquals(9, $game->turn()); 
+            $this->assertEquals('Draw game', $e->getMessage()); 
+            $this->assertNull($e->winner());
+        }
     }
 }

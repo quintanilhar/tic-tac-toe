@@ -81,6 +81,12 @@ class Game
                 $player
             );
         }
+
+        if ($this->isDraw()) {
+            $this->isOver = true;
+
+            throw new GameOverException('Draw game');
+        }
     }
 
     /**
@@ -90,5 +96,14 @@ class Game
     {
         $winnerSpecification = new WinnerSpecification();
         return $winnerSpecification->isSatisfiedBy($this);
+    }
+
+    /**
+     * @return bool
+     */
+    private function isDraw() : bool
+    {
+        $drawSpecification = new DrawSpecification();
+        return $drawSpecification->isSatisfiedBy($this);
     }
 }
